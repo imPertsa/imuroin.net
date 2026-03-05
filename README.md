@@ -1,6 +1,6 @@
 # imuroin.net
 
-Personal landing page built with React and Vite.
+Personal landing page built with React and Vite, deployed to Cloudflare Pages.
 
 ## Requirements
 - Bun 1.1+
@@ -12,22 +12,14 @@ bun run dev
 ```
 Open `http://localhost:5173` in your browser.
 
-## Build and preview
+## Cloudflare Pages
 ```bash
-bun run build
-bun run preview
+bun run deploy
 ```
 
-## Docker (production)
+Local development with Cloudflare:
 ```bash
-docker compose up -d web
+bun run dev:cloudflare
 ```
-For TLS, set your domain in `nginx/default.conf` and issue certs with Certbot.
 
-## Makefile shortcuts
-- `make install`
-- `make dev`
-- `make build`
-- `make preview`
-- `make docker-up`
-- `make docker-down`
+First-time setup: Run `wrangler login` to authenticate with Cloudflare.

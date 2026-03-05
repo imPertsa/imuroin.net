@@ -2,10 +2,12 @@
   "name": "personal-landing",
   "private": true,
   "type": "module",
-  "scripts": {
+"scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "wrangler pages deploy dist",
+    "dev:cloudflare": "wrangler pages dev dist"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -16,6 +18,7 @@
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.2.0",
     "typescript": "^5.4.0",
-    "vite": "^5.2.0"
+    "vite": "^5.2.0",
+    "wrangler": "^3.28.0"
   }
 }

@@ -1,7 +1,0 @@
-node_modules
-dist
-letsencrypt
-certbot-www
-.git
-.gitignore
-*.log

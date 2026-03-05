@@ -32,10 +32,10 @@ const socials = [
 
 const projects = [
   {
-    label: "Anonymous chat",
-    handle: "chat.imuroin.net",
-    url: "https://chat.imuroin.net",
-    context: "An anonymous chat for short-term conversations. Built with Golang and Vite.",
+    label: "Short URL Service",
+    handle: "url.imuroin.net",
+    url: "https://url.imuroin.net",
+    context: "A short URL service built with TypeScript. Hosted using Cloudflare Workers and KV.",
   }
 ];
 

@@ -36,6 +36,12 @@ const projects = [
     handle: "url.imuroin.net",
     url: "https://url.imuroin.net",
     context: "A short URL service built with TypeScript. Hosted using Cloudflare Workers and KV.",
+  },
+  {
+    label: "Pastebin",
+    handle: "pastebin.imuroin.net",
+    url: "https://pastebin.imuroin.net",
+    context: "A pastebin service built with Python. Hosted using Cloudflare Workers and D1.",
   }
 ];
 

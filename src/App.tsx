@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import TreeLinks from "./components/TreeLinks";
 
 const profile = {
@@ -46,8 +47,27 @@ const projects = [
 ];
 
 export default function App() {
+  const [theme, setTheme] = useState<"dark" | "light">(() => {
+    if (typeof window !== "undefined") {
+      return (localStorage.getItem("theme") as "dark" | "light") || "light";
+    }
+    return "dark";
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  function toggleTheme() {
+    setTheme((t) => (t === "dark" ? "light" : "dark"));
+  }
+
   return (
     <div className="page">
+      <button className="theme-toggle" onClick={toggleTheme} title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}>
+        {theme === "dark" ? "\u2600" : "\u263E"}
+      </button>
       <main className="shell">
         <header className="title reveal" style={{ animationDelay: "0.05s" }}>
             <h1>{profile.name}</h1>

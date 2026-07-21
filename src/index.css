@@ -1,6 +1,20 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap");
 
 :root {
+  color-scheme: light;
+  --bg: #f5f0eb;
+  --bg-2: #ede6df;
+  --panel: #fcf9f6;
+  --panel-2: #f8f3ed;
+  --text: #2c2420;
+  --muted: #7a7068;
+  --accent: #0e7c7a;
+  --border: #ddd5cc;
+  --shadow: 0 28px 70px rgba(60, 40, 30, 0.15);
+  --diagonal: rgba(60, 40, 30, 0.12);
+}
+
+[data-theme="dark"] {
   color-scheme: dark;
   --bg: #1a1a1a;
   --bg-2: #171717;
@@ -11,6 +25,13 @@
   --accent: #f08a24;
   --border: #303030;
   --shadow: 0 28px 70px rgba(0, 0, 0, 0.6);
+  --diagonal: rgba(255, 255, 255, 0.04);
+}
+
+*,
+*::before,
+*::after {
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 * {
@@ -35,8 +56,8 @@ body::before {
   inset: 0;
   background: repeating-linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.04),
-    rgba(255, 255, 255, 0.04) 1px,
+    var(--diagonal),
+    var(--diagonal) 1px,
     transparent 1px,
     transparent 10px
   );
@@ -139,7 +160,7 @@ h4 {
 }
 
 .tree-entry:hover {
-  background: rgba(240, 138, 36, 0.08);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .tree-entry:hover .tree-url {
@@ -300,9 +321,36 @@ h4 {
   }
 }
 
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cta,
-  .tree-entry {
-    transition: none;
+  .tree-entry,
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
   }
 }

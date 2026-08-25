@@ -156,6 +156,7 @@ h4 {
   align-items: center;
   gap: 0.5ch;
   height: var(--row-height);
+  font-family: "IBM Plex Mono", monospace;
   font-size: 17px;
   position: relative;
   z-index: 1;

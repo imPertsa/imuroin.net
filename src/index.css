@@ -2,6 +2,7 @@
 
 :root {
   color-scheme: light;
+
   --bg: #f5f0eb;
   --bg-2: #ede6df;
   --panel: #fcf9f6;
@@ -10,12 +11,21 @@
   --muted: #7a7068;
   --accent: #0e7c7a;
   --border: #ddd5cc;
+
   --shadow: 0 28px 70px rgba(60, 40, 30, 0.15);
   --diagonal: rgba(60, 40, 30, 0.12);
+
+  --guide-width: 1.5px;
+  --row-height: 32px;
+  --indent: 20px;
+
+  --transition-theme: background 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
+
   --bg: #1a1a1a;
   --bg-2: #171717;
   --panel: #202020;
@@ -24,6 +34,7 @@
   --muted: #b0b0b0;
   --accent: #f08a24;
   --border: #303030;
+
   --shadow: 0 28px 70px rgba(0, 0, 0, 0.6);
   --diagonal: rgba(255, 255, 255, 0.04);
 }
@@ -31,29 +42,29 @@
 *,
 *::before,
 *::after {
-  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-* {
   box-sizing: border-box;
+  transition: var(--transition-theme);
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  position: relative;
   font-family: "IBM Plex Mono", "Segoe UI", sans-serif;
+  color: var(--text);
   background:
     radial-gradient(circle at 15% 15%, rgba(240, 138, 36, 0.08), transparent 45%),
     radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.04), transparent 45%),
     linear-gradient(180deg, var(--bg), var(--bg-2));
-  color: var(--text);
-  position: relative;
 }
 
 body::before {
   content: "";
   position: fixed;
   inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.35;
   background: repeating-linear-gradient(
     135deg,
     var(--diagonal),
@@ -61,9 +72,6 @@ body::before {
     transparent 1px,
     transparent 10px
   );
-  opacity: 0.35;
-  pointer-events: none;
-  z-index: 0;
 }
 
 .page {
@@ -83,7 +91,6 @@ body::before {
   justify-items: center;
 }
 
-
 .title {
   padding: 16px 0 0;
 }
@@ -94,41 +101,34 @@ h1 {
   line-height: 1.1;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--accent);
   text-align: center;
+  color: var(--accent);
 }
 
 h4 {
   margin: 8px 0 0;
+  font-size: clamp(18px, 3vw, 22px);
   line-height: 1.1;
   letter-spacing: 0.06em;
-  font-size: clamp(18px, 3vw, 22px);
-  color: var(--muted);
   text-align: center;
+  color: var(--muted);
 }
 
 .links-box {
+  width: 100%;
+  max-width: 936px;
+  justify-self: center;
+  overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 5px;
   background: var(--panel);
   box-shadow: var(--shadow);
-  overflow: hidden;
-  width: 100%;
-  max-width: 936px;
-  justify-self: center;
-}
-
-.links-box::before {
-  content: "";
-  display: block;
-  height: 1px;
-  background: var(--border);
 }
 
 .tree-root {
-  padding: 10px 20px;
-  color: var(--accent);
+  padding: 10px var(--indent);
   font-size: 18px;
+  color: var(--accent);
   border-bottom: 1px solid var(--border);
 }
 
@@ -146,131 +146,100 @@ h4 {
   position: relative;
 }
 
-.tree-entry {
-  display: flex;
-  flex-direction: column;
-  padding: 0px 20px; /* Scaled vertical & horizontal padding */
-  text-decoration: none;
-  color: var(--muted);
-  width: 100%;
-  position: relative;
-  transition: background 0.2s ease, transform 0.2s ease;
-  border-radius: 6px;
-  margin: 0 -10px;
-}
-
-.tree-entry:hover {
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
-}
-
-.tree-entry:hover .tree-url {
-  color: var(--accent);
-}
-
-.tree-row {
-  display: flex;
-  align-items: center;
-  height: 32px;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 17px;
-  position: relative;
-  z-index: 1;
-  gap: 0.5ch;
-}
-
-.tree-prefix {
-  color: var(--border);
-  white-space: pre;
-  /* Slightly larger font size to make tree characters more prominent */
-  font-size: 17.5px;
-  font-weight: 500;
-  /* Remove fixed width to allow content (like │  └─) to define size */
-  flex-shrink: 0;
-  display: inline-block;
-  line-height: 1;
-  position: relative; /* Ensure it stays a coordinate anchor */
-}
-
-/* This creates the perfectly continuous vertical guide */
-.tree-prefix::before {
-  content: "";
-  position: absolute;
-  /* Monospace center-alignment */
-  left: 0.5ch;
-  transform: translateX(-50%);
-  top: -16px;
-  bottom: -16px;
-  width: 1.5px; /* Thicker to match (like │  └─) */
-  background: var(--border);
-  z-index: -1;
-}
-
-/* Terminate the very top of the stalk */
-.tree-list li:first-child .tree-row:first-child .tree-prefix::before {
-  top: 50%;
-}
-
-/* For terminal nodes, the stalk must stop at the first row branch */
-.tree-node.is-last .tree-row:first-child .tree-prefix::before {
-  bottom: 50%;
-}
-
-/* IMPORTANT: Hide the primary stalk for subsequent rows in the LAST node to prevent leaks */
-.tree-node.is-last .tree-entry .tree-row:not(:first-child) .tree-prefix::before,
-.tree-node.is-last .tree-context-box .tree-prefix::before {
-  display: none;
-}
-
 .tree-entry-group {
   display: flex;
   flex-direction: column;
 }
 
-.tree-context-box {
-  padding: 0 20px; /* Match tree-entry padding */
-  margin: 0 -10px; /* Match tree-entry margin */
-  pointer-events: none;
+.tree-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5ch;
+  height: var(--row-height);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 17px;
+  position: relative;
+  z-index: 1;
 }
 
-.tree-context {
-  font-size: 14px; /* Slightly smaller for secondary info */
-  color: var(--muted);
-  opacity: 0.7;
-  line-height: 1.5;
-  padding: 4px 0;
+.tree-prefix {
+  color: var(--border);
+  white-space: pre;
+  font-size: 17.5px;
+  font-weight: 500;
+  line-height: 1;
+  flex-shrink: 0;
+  display: inline-block;
+  position: relative;
 }
 
-/* Secondary Guide Line (for nested branches like the handle -> context link) */
-/* This line connects row stems at the secondary indent level (ch index 3) */
-.tree-row .tree-prefix::after {
+.tree-prefix::before {
+  content: "";
+  position: absolute;
+  left: 0.5ch;
+  transform: translateX(-50%);
+  top: -16px;
+  bottom: -16px;
+  width: var(--guide-width);
+  background: var(--border);
+  z-index: -1;
+}
+
+.tree-prefix::after {
   content: "";
   position: absolute;
   left: 3.5ch;
   transform: translateX(-50%);
   top: -10px;
   bottom: -16px;
-  width: 1.5px; /* Thicker to match (like │  └─) */
+  width: var(--guide-width);
   background: var(--border);
   z-index: -1;
   display: none;
 }
 
-/* Show secondary stem if there is a following row in same node block */
+.tree-list li:first-child .tree-row:first-child .tree-prefix::before {
+  top: 50%;
+}
+
+.tree-node.is-last .tree-row:first-child .tree-prefix::before {
+  bottom: 50%;
+}
+
+.tree-node.is-last .tree-entry .tree-row:not(:first-child) .tree-prefix::before,
+.tree-node.is-last .tree-context-box .tree-prefix::before {
+  display: none;
+}
+
 .tree-row:has(+ .tree-row) .tree-prefix::after,
 .tree-entry:has(+ .tree-context-box) .tree-row:last-child .tree-prefix::after {
   display: block;
 }
 
-/* Stop the secondary stem at the Context (the actual final leaf) */
 .tree-context-box .tree-row:last-child .tree-prefix::after {
   display: block;
-  bottom: 50%;
   top: -16px;
+  bottom: 50%;
 }
 
-/* Hide secondary stems specifically for the main project titles */
 .tree-row:first-child .tree-prefix::after {
   display: none !important;
+}
+
+.tree-entry {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 var(--indent);
+  margin: 0 -10px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--muted);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.tree-entry:hover {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
 
 .tree-folder {
@@ -282,6 +251,48 @@ h4 {
 .tree-url {
   color: var(--muted);
   transition: color 0.2s ease;
+}
+
+.tree-entry:hover .tree-url {
+  color: var(--accent);
+}
+
+.tree-context-box {
+  padding: 0 var(--indent);
+  margin: 0 -10px;
+  pointer-events: none;
+}
+
+.tree-context {
+  padding: 4px 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 .reveal {
@@ -304,53 +315,16 @@ h4 {
   }
 }
 
-@media (min-width: 860px) {
-  .hero {
-    grid-template-columns: 1.2fr 0.8fr;
-    align-items: start;
-  }
-}
-
-@media (max-width: 600px) {
-  .tree-line {
-    white-space: normal;
-  }
-
-  .tree-url {
-    word-break: break-all;
-  }
-}
-
-.theme-toggle {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 100;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--panel);
-  color: var(--muted);
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow);
-}
-
-.theme-toggle:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .cta,
-  .tree-entry,
   *,
   *::before,
   *::after {
     transition: none !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .tree-url {
+    word-break: break-all;
   }
 }

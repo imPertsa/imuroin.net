@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 export type Theme = "dark" | "light";
 
 const THEME_KEY = "theme";
-const DEFAULT_THEME: Theme = "dark";
+const DEFAULT_THEME: Theme = "light";
 
 function getInitialTheme(): Theme {
   if (typeof window === "undefined") return DEFAULT_THEME;
@@ -20,7 +20,7 @@ export function useTheme() {
   }, [theme]);
 
   const toggleTheme = () =>
-    setTheme((t) => (t === "dark" ? "light" : "dark"));
+    setTheme((t) => (t === "light" ? "light" : "dark"));
 
   return { theme, toggleTheme };
 }

@@ -31,7 +31,7 @@ export const projects = [
     handle: "url.imuroin.net",
     url: "https://url.imuroin.net",
     context:
-      "A short URL service built with TypeScript. Hosted using Cloudflare Workers and KV.",
+      "A short URL service built with TypeScript. Hosted using Cloudflare Workers, KV and R2.",
   },
   {
     label: "Pastebin",
